@@ -1,7 +1,6 @@
 package tests;
 
 import org.testng.annotations.Test;
-
 import static org.testng.Assert.*;
 
 public class FirstClass extends BaseTest {
@@ -11,7 +10,6 @@ public class FirstClass extends BaseTest {
         loginPage.open();
         loginPage.login("standard_user", "secret_sauce");
         assertEquals(loginPage.searchElement(), "Products", "Ожидался раздел 'Products'");
-
     }
 
     @Test
@@ -24,4 +22,3 @@ public class FirstClass extends BaseTest {
                 "Ожидался текст: 'Epic sadface: Sorry, this user has been locked out.'");
     }
 }
-
