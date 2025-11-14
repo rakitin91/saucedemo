@@ -2,35 +2,43 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class LoginPage {
-    WebDriver browser;
+public class LoginPage extends BasePage {
 
-    private static final By USERNAME = By.id("user-name");
-    private static final By PASSWORD = By.id("password");
-    private static final By BUTTON_LOGIN = By.id("login-button");
-    private static final By PRODUCTS = By.xpath("//span[text()='Products']");
-    private static final By ERRORMSG = By.cssSelector("h3[data-test='error']");
+    private By loginInput = By.id("user-name");
+    private By passInput = By.id("password");
+    private By btnLogin = By.id("login-button");
+    private By errorMsg = By.cssSelector("h3[data-test='error']");
 
-    public LoginPage(WebDriver browser) {
-        this.browser = browser;
+    public LoginPage(WebDriver driver) {
+        super(driver);
     }
 
     public void open() {
-        browser.get("https://www.saucedemo.com/");
+        driver.get(BASE_URL);
     }
 
     public void login(String username, String password) {
-        browser.findElement(USERNAME).sendKeys(username);
-        browser.findElement(PASSWORD).sendKeys(password);
-        browser.findElement(BUTTON_LOGIN).click();
+        fillInLogin(username);
+        fillPassword(password);
+        pressbtnLogin();
     }
 
-    public String searchElement() {
-        return browser.findElement(PRODUCTS).getText();
+    public void fillInLogin(String username) {
+        driver.findElement(loginInput).sendKeys(username);
+    }
+
+    public void fillPassword(String password) {
+        driver.findElement(passInput).sendKeys(password);
+    }
+
+    public void pressbtnLogin() {
+        driver.findElement(btnLogin).click();
     }
 
     public String checkErrorMsg() {
-        return browser.findElement(ERRORMSG).getText();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(errorMsg));
+        return driver.findElement(errorMsg).getText();
     }
 }
