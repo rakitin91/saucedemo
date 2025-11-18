@@ -1,5 +1,6 @@
 package tests;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.*;
@@ -13,41 +14,20 @@ public class LoginTest extends BaseTest {
         assertEquals(productsPage.getTitleText(), "Products", "Ожидался раздел 'Products'");
     }
 
-    @Test
-    public void lockedOutUser() {
-        loginPage.open();
-        loginPage.login("locked_out_user", "secret_sauce");
-        assertEquals(
-                loginPage.checkErrorMsg(),
-                "Epic sadface: Sorry, this user has been locked out.",
-                "Ожидался текст: 'Epic sadface: Sorry, this user has been locked out.'");
+    @DataProvider()
+    public Object[][] loginData() {
+        return new Object[][]{
+                {"locked_out_user", "secret_sauce", "Epic sadface: Sorry, this user has been locked out."},
+                {"standard_user", "", "Epic sadface: Password is required"},
+                {"", "secret_sauce", "Epic sadface: Username is required"},
+                {"standard_user", "123", "Epic sadface: Username and password do not match any user in this service"}
+        };
     }
 
-    @Test(description = "Проверка авторизации без ввода пароля")
-    public void noPassword() {
+    @Test(dataProvider = "loginData")
+    public void incorrectTests(String user, String password, String errorMessage) {
         loginPage.open();
-        loginPage.fillInLogin("standard_user");
-        loginPage.pressbtnLogin();
-        assertEquals(
-                loginPage.checkErrorMsg(), "Epic sadface: Password is required");
-    }
-
-    @Test(description = "Проверка авторизации без ввода логина")
-    public void noLogin() {
-        loginPage.open();
-        loginPage.fillPassword("secret_sauce");
-        loginPage.pressbtnLogin();
-        assertEquals(
-                loginPage.checkErrorMsg(), "Epic sadface: Username is required");
-    }
-
-    @Test(description = "Проверка авторизации, ввод невалидного пароля")
-    public void invalidPassword() {
-        loginPage.open();
-        loginPage.fillInLogin("standard_user");
-        loginPage.fillPassword("123");
-        loginPage.pressbtnLogin();
-        assertEquals(
-                loginPage.checkErrorMsg(), "Epic sadface: Username and password do not match any user in this service");
+        loginPage.login(user, password);
+        assertEquals(loginPage.checkErrorMsg(), errorMessage);
     }
 }
