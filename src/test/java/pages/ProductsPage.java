@@ -7,8 +7,8 @@ public class ProductsPage extends BasePage {
     private static final String ADD_TO_CART =
             "//*[text()='%s']//ancestor::div[@class='inventory_item']//child::button[text()='Add to cart']";
     private final By title = By.xpath("//span[text()='Products']");
-    private final By btnaddtocart = By.xpath("//*[text()='Add to cart']");
-    private final By cartlink = By.cssSelector("[data-test='shopping-cart-link']");
+    private final By btnAddToCart = By.xpath("//*[text()='Add to cart']");
+    private final By cartLink = By.cssSelector("[data-test='shopping-cart-link']");
 
     public ProductsPage(WebDriver driver) {
         super(driver);
@@ -28,10 +28,10 @@ public class ProductsPage extends BasePage {
     }
 
     public void addToCart(final int index) {
-        driver.findElements(btnaddtocart).get(index).click();
+        driver.findElements(btnAddToCart).get(index).click();
     }
 
     public void switchToCart() {
-        driver.findElement(cartlink).click();
+        driver.findElement(cartLink).click();
     }
 }
