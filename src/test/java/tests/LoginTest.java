@@ -1,12 +1,13 @@
 package tests;
 
+import enums.DepartmentNaming;
 import io.qameta.allure.*;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import user.User;
 import user.UserFactory;
-import utils.AllureUtils;
 
+import static enums.DepartmentNaming.PRODUCTS
 import static org.testng.Assert.*;
 
 public class LoginTest extends BaseTest {
@@ -24,7 +25,7 @@ public class LoginTest extends BaseTest {
         System.out.println("Authorization Test are running in thread: " + Thread.currentThread().getId());
         loginPage.open();
         loginPage.login(UserFactory.withAdminPermission());
-        assertEquals(productsPage.getTitleText(), "Products", "Ожидался раздел 'Products'");
+        assertEquals(productsPage.getTitleText(), PRODUCTS.getDisplayName(), "Ожидался раздел 'Products'");
     }
 
     @DataProvider()
